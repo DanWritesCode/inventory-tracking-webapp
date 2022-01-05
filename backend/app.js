@@ -20,9 +20,9 @@ const port = 3000; // the port the API server runs on
 let db = new sqlite3.Database('inventory.db');
 
 // create the table if it doesn't already exist
-db.exec("CREATE TABLE IF NOT EXISTS `items` (\n" +
-  "  `name` varchar(255) NOT NULL,\n" +
-  "  `cost` decimal(10,2) NOT NULL,\n" +
+db.exec("CREATE TABLE IF NOT EXISTS `items` (" +
+  "  `name` varchar(255) NOT NULL," +
+  "  `cost` decimal(10,2) NOT NULL," +
   "  `quantity` int(11) NOT NULL)");
 
 // JSON-related Express middleware
@@ -43,12 +43,11 @@ app.get('/', (req, res) => {
 app.get('/inventory', (req, res) => {
   db.all("SELECT rowid AS id, name, cost, quantity FROM items;", [], (err, rows) => {
     if (err) {
-      res.statusCode = 500;
-      res.json({"error": "unable to retrieve data"})
+      res.status(500).json({"error": "unable to retrieve data"})
     } else {
       res.json(rows);
     }
-  });
+  })
 })
 
 
@@ -69,21 +68,18 @@ app.post('/inventory', (req, res) => {
       else if(jReq.quantity == null || jReq.quantity === "")
         res.json({"error": "invalid item quantity"})
       else
-        db.run(`INSERT INTO items(name, cost, quantity) VALUES (?, ?, ?)`, [jReq.name, jReq.cost, jReq.quantity], function (err) {
+        db.run(`INSERT INTO items(name, cost, quantity) VALUES (?, ?, ?)`, [jReq.name, jReq.cost, jReq.quantity], (err) => {
           if (err) {
-            res.statusCode = 500;
-            res.json({"error": "unable to insert item"})
+            res.status(500).json({"error": "unable to insert item"})
           } else {
             res.json({"success": true, "id": this.lastID})
           }
-        });
+        })
     } else {
-      res.statusCode = 400;
-      res.json({"error": "missing required data"})
+      res.status(400).json({"error": "missing required data"})
     }
   } catch {
-    res.statusCode = 400;
-    res.json({"error": "unable to process request"})
+    res.status(400).json({"error": "unable to process request"})
   }
 })
 
@@ -107,20 +103,18 @@ app.put('/inventory', (req, res) => {
       else if(jReq.quantity == null || jReq.quantity === "")
         res.json({"error": "invalid item quantity"})
       else
-        db.run(`UPDATE items SET name = ?, cost = ?, quantity = ? WHERE rowid = ?;`, [jReq.name, jReq.cost, jReq.quantity, jReq.id], function (err) {
+        db.run(`UPDATE items SET name = ?, cost = ?, quantity = ? WHERE rowid = ?;`, [jReq.name, jReq.cost, jReq.quantity, jReq.id], (err) => {
           if (err) {
             res.json({"error": "unable to update item"})
           } else {
             res.json({"success": true})
           }
-        });
+        })
     } else {
-      res.statusCode = 400;
-      res.json({"error": "missing required data"})
+      res.status(400).json({"error": "missing required data"})
     }
   } catch {
-    res.statusCode = 400;
-    res.json({"error": "unable to process request. was the data sent as JSON?"})
+    res.status(400).json({"error": "unable to process request. was the data sent as JSON?"})
   }
 })
 
@@ -138,32 +132,29 @@ app.delete('/inventory', (req, res) => {
       if (isNaN(parseInt(jReq.id)) || parseInt(jReq.id) <= 0)
         res.json({"error": "invalid item id"})
       else
-        db.run(`DELETE FROM items WHERE rowid = ?;`, [jReq.id], function (err) {
+        db.run(`DELETE FROM items WHERE rowid = ?;`, [jReq.id], (err) => {
           if (err) {
             res.json({"error": "unable to delete item"})
           } else {
             if(this.changes === 0) {
-              res.statusCode = 400;
-              res.json({"error": "Item to delete was not found"})
+              res.status(400).json({"error": "Item to delete was not found"})
             } else {
               res.json({"success": true})
             }
           }
-        });
+        })
     } else {
-      res.statusCode = 400;
-      res.json({"error": "missing item ID"})
+      res.status(400).json({"error": "missing item ID"})
     }
   } catch (e) {
-    res.statusCode = 400;
-    res.json({"error": "unable to process request. was the data sent as JSON?"})
+    res.status(400).json({"error": "unable to process request. was the data sent as JSON?"})
   }
 })
 
 // GET '/export' Endpoint
 // Exports inventory data as a CSV
 app.get('/export', (req, res) => {
-  db.all(`SELECT rowid AS id, name, cost, quantity FROM items;`, [], function (err, rows) {
+  db.all(`SELECT rowid AS id, name, cost, quantity FROM items;`, [], (err, rows) => {
     if (err) {
       res.json({"error": "unable to export data"})
     } else {
@@ -180,16 +171,14 @@ app.get('/export', (req, res) => {
           },{
             label: 'Item Quantity',
             value: 'quantity'
-          }]});
+          }]})
         const csv = parser.parse(rows);
         res.send(csv);
       } catch (err) {
-        res.statusCode = 500;
-        res.json({"error": "Server is unable to export CSV"})
+        res.status(500).json({"error": "Server is unable to export CSV"})
       }
-
     }
-  });
+  })
 })
 
 // Starts up the API server
