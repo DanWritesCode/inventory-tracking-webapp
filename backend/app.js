@@ -8,13 +8,13 @@
 *                 Handles CRUD through POST, GET, PUT, and DELETE HTTP methods on the /inventory endpoint.
 */
 
-const express = require('express')
-const cors = require('cors')
+const express = require('express');
+const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 const { Parser } = require('json2csv');
 
-const app = express()
-const port = 3000
+const app = express();
+const port = 3000; // the port the API server runs on
 
 // open the database
 let db = new sqlite3.Database('inventory.db');
@@ -23,12 +23,12 @@ let db = new sqlite3.Database('inventory.db');
 db.exec("CREATE TABLE IF NOT EXISTS `items` (\n" +
   "  `name` varchar(255) NOT NULL,\n" +
   "  `cost` decimal(10,2) NOT NULL,\n" +
-  "  `quantity` int(11) NOT NULL)")
+  "  `quantity` int(11) NOT NULL)");
 
 // JSON-related Express middleware
 app.use(express.json());
-app.use(express.urlencoded({extended: true}))
-app.use(cors())
+app.use(express.urlencoded({extended: true}));
+app.use(cors());
 
 // GET '/' Endpoint
 // Returns basic information regarding the application/API. Not strictly required.

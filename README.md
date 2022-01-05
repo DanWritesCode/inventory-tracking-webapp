@@ -28,12 +28,14 @@ Frontend + Backend of an inventory/item tracking system.
 ### 2) Go to the "backend" folder, open a command line, and type:
 `npm install`
 
-This will install the neccassary dependencies.
+This will install the necessary dependencies.
 
 ### 3) Launch the node.js backend API application
 Type `node app.js` in the command line.
 
 The SQLite database file is automatically created in the same folder.
+
+By default, the application starts listening on localhost:3000. If the host changes, the `API_HOST` constant in `frontend/js/script.js` should be updated. 
 
 ### 4) Go to the frontend folder, and open the index.html file with a browser
 Alternatively, copy the frontend folder to a web server such as IIS, Apache, or Nginx, and open the index.html through the web server.

@@ -1,11 +1,20 @@
+/*
+* FILE          : script.js
+* PROJECT       : Shopify 2022 Intern - Inventory Tracking Application (backend)
+* AUTHOR        : Daniel Radjenovic
+* FIRST VERSION : Jan 5, 2022
+* DESCRIPTION   : JS script running on the frontend application. Handles button clicks and data loading.
+*/
 
+// the api host with protocol (eg. http://localhost:3000) - no trailing slash
+const API_HOST = "http://localhost:3000";
 
 // stores the latest inventory data, refreshed by loadInventory();
 var INVENTORY_DATA = {};
 
 /* Load the inventory by making an AJAX GET call to the "/inventory" endpoint and populating the HTML */
 function loadInventory() {
-  $.ajax("http://localhost:3000/inventory", {
+  $.ajax(API_HOST + "/inventory", {
     type: "GET",
     dataType: "json",
     cache: false,
@@ -59,7 +68,7 @@ function editItem(itemId) {
       return;
     if(result.value !== undefined && result.value.hasOwnProperty("itemName") &&
       result.value.itemName.length > 0 && !isNaN(parseFloat(result.value.itemCost)) && !isNaN(parseInt(result.value.itemQuantity))) {
-      $.ajax("http://localhost:3000/inventory", {
+      $.ajax(API_HOST + "/inventory", {
         type: "PUT",
         data: JSON.stringify({
           id: itemId,
@@ -98,7 +107,7 @@ function deleteItem(itemId) {
     confirmButtonText: 'Delete',
   }).then((result) => {
     if(result.isConfirmed) {
-      $.ajax("http://localhost:3000/inventory", {
+      $.ajax(API_HOST + "/inventory", {
         type: "DELETE",
         data: JSON.stringify({
           id: itemId,
@@ -177,7 +186,7 @@ $(document).ready(function() {
         });
         return;
       }
-      $.ajax("http://localhost:3000/inventory", {
+      $.ajax(API_HOST + "/inventory", {
         data: JSON.stringify({
           name: result.value.itemName,
           cost: parseFloat(result.value.itemCost),
@@ -212,7 +221,7 @@ $(document).ready(function() {
 
   /* Handles the "Export Data (CSV)" button by making a call to /export and letting the browser download it */
   $("#export").click(function() {
-    $.ajax("http://localhost:3000/export", {
+    $.ajax(API_HOST + "/export", {
       type: "GET",
       cache: false,
     }).done( function (data) {
