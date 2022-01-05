@@ -2,6 +2,25 @@
 
 Frontend + Backend of an inventory/item tracking system.
 
+# Main Page (Frontend)
+![Screenshot 2022-01-05 163811](https://user-images.githubusercontent.com/50718889/148294176-d72ce426-a0f7-4756-9a33-b5e4068eba27.jpg)
+
+# Features
+- Backend:
+  - Persistent storage using SQLite
+  - JSON-based API with input validation
+  - 3 Endpoints and multiple HTTP methods for CRUD support
+  - CSV export system with utilizing the json2csv package
+- Frontend:
+  - Full item listing
+  - Edit and Delete options for each Item - with user confirmation
+  - Add New Items
+  - Special Feature: Export Data & Download CSV
+  - Modern design with Bootstrap
+  - Use of Sweetalert2 for user input
+  - Fully AJAX based
+  - Dark theme inspired by GitHub
+
 # Installation Instructions
 
 ### 0) Ensure Node.JS and NPM (node package manager) are installed on the system
