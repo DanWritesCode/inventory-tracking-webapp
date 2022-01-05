@@ -24,8 +24,8 @@ function loadInventory() {
 
       // Append each item to the table, along with the action buttons which have onClick event handlers
       $("#tableBody").append("<tr><th scope='row'>"+item.id+"</th><td>"+
-        item.name+"</td><td>$"+parseFloat(item.cost).toFixed(2)+
-        "</td><td>"+item.quantity+"</td>"+"<td>\n" +
+        item.name+"</td><td>$"+parseFloat(item.cost).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})+
+        "</td><td>"+item.quantity.toLocaleString()+"</td>"+"<td>\n" +
         "<button type=\"button\" onClick='editItem(`"+item.id+"`)' class=\"btn btn-success\"><i class=\"fas fa-edit\"></i></button>&nbsp;" +
         "<button type=\"button\" onClick='deleteItem(`"+item.id+"`)' class=\"btn btn-danger\"><i class=\"far fa-trash-alt\"></i></button>" +
         "</td>"+"</tr>");
