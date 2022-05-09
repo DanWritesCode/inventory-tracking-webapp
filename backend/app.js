@@ -23,7 +23,10 @@ let db = new sqlite3.Database('inventory.db');
 db.exec("CREATE TABLE IF NOT EXISTS `items` (" +
   "  `name` varchar(255) NOT NULL," +
   "  `cost` decimal(10,2) NOT NULL," +
-  "  `quantity` int(11) NOT NULL)");
+  "  `quantity` int(11) NOT NULL,"+
+  "  `deleted` int(1) DEFAULT 0 NOT NULL,"+
+  "  `deletedReason` varchar(255) NULL"+
+  ")");
 
 // JSON-related Express middleware
 app.use(express.json());
@@ -41,7 +44,7 @@ app.get('/', (req, res) => {
 // Returns inventory items as a JSON string
 // The "READ" part of CRUD
 app.get('/inventory', (req, res) => {
-  db.all("SELECT rowid AS id, name, cost, quantity FROM items;", [], (err, rows) => {
+  db.all("SELECT rowid AS id, name, cost, quantity, deleted, deletedReason FROM items;", [], (err, rows) => {
     if (err) {
       res.status(500).json({"error": "unable to retrieve data"})
     } else {
@@ -86,6 +89,7 @@ app.post('/inventory', (req, res) => {
 
 // PUT '/inventory' Endpoint
 // Updates existing inventory items in the table
+// Un-deletes the item if it was deleted
 // The "UPDATE" part of CRUD
 app.put('/inventory', (req, res) => {
   try {
@@ -103,7 +107,7 @@ app.put('/inventory', (req, res) => {
       else if(jReq.quantity == null || jReq.quantity === "")
         res.json({"error": "invalid item quantity"})
       else
-        db.run(`UPDATE items SET name = ?, cost = ?, quantity = ? WHERE rowid = ?;`, [jReq.name, jReq.cost, jReq.quantity, jReq.id], (err) => {
+        db.run(`UPDATE items SET name = ?, cost = ?, quantity = ?, deleted = 0, deletedReason = NULL WHERE rowid = ?;`, [jReq.name, jReq.cost, jReq.quantity, jReq.id], (err) => {
           if (err) {
             res.json({"error": "unable to update item"})
           } else {
@@ -127,12 +131,12 @@ app.delete('/inventory', (req, res) => {
     let jReq = req.body;
 
     // ensure ID field is present in the JSON
-    if (jReq.hasOwnProperty("id")) {
+    if (jReq.hasOwnProperty("id") && jReq.hasOwnProperty("reason")) {
       // ensure ID field is valid
       if (isNaN(parseInt(jReq.id)) || parseInt(jReq.id) <= 0)
         res.json({"error": "invalid item id"})
       else
-        db.run(`DELETE FROM items WHERE rowid = ?;`, [jReq.id], (err) => {
+        db.run(`UPDATE items SET deleted = 1, deletedReason = ? WHERE rowid = ?;`, [jReq.reason, jReq.id], (err) => {
           if (err) {
             res.json({"error": "unable to delete item"})
           } else {
@@ -144,7 +148,7 @@ app.delete('/inventory', (req, res) => {
           }
         })
     } else {
-      res.status(400).json({"error": "missing item ID"})
+      res.status(400).json({"error": "missing item ID or deletion reason"})
     }
   } catch (e) {
     res.status(400).json({"error": "unable to process request. was the data sent as JSON?"})
