@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Inventory Tracking Application</title>
+  <title>Inventory Tracking Application - Deleted Items</title>
 
   <!-- JQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -40,15 +40,7 @@
         <!-- New item button section -->
         <div class="col-12 text-center col-md-8 text-md-start">
           <div>
-            <button class="btn btn-primary" id="newItemBtn">Add New Item</button>
-          </div>
-        </div>
-        <!-- export button section -->
-        <div class="col-md-4 col-12 mt-4 mt-md-0">
-          <div class="input-group flex-row-reverse">
-            <input type="button" class="btn btn-success ml-4" id="export" value="Export Data (CSV)"/>
-            &nbsp;
-            <a type="button" class="btn btn-dark ml-2" href="deletedItems.html" id="deletedItems">View Deleted Items</a>
+            <a class="btn btn-primary" href="index.html">Back to Inventory</a>
           </div>
         </div>
       </div>
@@ -57,13 +49,14 @@
           <!-- Table Headings -->
           <thead>
             <tr>
-              <th scope="row" colspan="5" class="text-center">Inventory Items</th>
+              <th scope="row" colspan="6" class="text-center">Deleted Items</th>
             </tr>
             <tr>
               <th scope="col">Item ID</th>
               <th scope="col">Item Name</th>
               <th scope="col">Item Cost</th>
               <th scope="col">Item Quantity</th>
+              <th scope="col">Deletion Reason</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
@@ -77,7 +70,7 @@
   </div>
   <script>
     $(document).ready(function() {
-      loadInventory();
+      loadDeletedInventory();
     });
   </script>
 </body>
