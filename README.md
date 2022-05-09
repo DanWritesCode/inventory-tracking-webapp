@@ -1,9 +1,10 @@
-# Shopify Summer 2022 Intern Challenge
+# Inventory Tracking Web Application
 
 Frontend + Backend of an inventory/item tracking system.
 
 # Main Page (Frontend)
-![Screenshot 2022-01-05 163811](https://user-images.githubusercontent.com/50718889/148294176-d72ce426-a0f7-4756-9a33-b5e4068eba27.jpg)
+![image](https://user-images.githubusercontent.com/50718889/167464062-2b2302ae-6634-4a51-829b-b2f2410bd35c.png)
+
 
 # Features
 - Backend:
@@ -14,6 +15,8 @@ Frontend + Backend of an inventory/item tracking system.
 - Frontend:
   - Full item listing
   - Edit and Delete options for each Item - with user confirmation
+  - Specify reason for deleting an item
+  - View deleted items, un-delete items
   - Add New Items
   - Special Feature: Export Data & Download CSV
   - Modern design with Bootstrap
