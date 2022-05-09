@@ -7,7 +7,7 @@
 */
 
 // the api host with protocol (eg. http://localhost:3000) - no trailing slash
-const API_HOST = "http://localhost:3000";
+const API_HOST = "http://localhost:3000/api";
 
 // stores the latest inventory data, refreshed by loadInventory();
 var INVENTORY_DATA = {};

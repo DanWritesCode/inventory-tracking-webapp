@@ -1,8 +1,8 @@
 {
-  "name": "backend",
+  "name": "app_server",
   "version": "1.0.0",
   "description": "Shopify 2022 Intern - Inventory Tracking Application (backend)",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
